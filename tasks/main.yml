@@ -1,0 +1,25 @@
+---
+  - name: Installing apache server
+    yum: 
+      name: httpd
+      state: latest
+  - name: Start and Enable httpd service
+    service:
+      name: httpd
+      state: started
+      enabled: true
+  - name: Openning http service in firewall
+    firewalld:
+      service: http
+      state: enabled
+      permanent: true
+      immediate: true
+  - name: Copy file.txt over managed nodes
+    copy:
+      src: file.txt
+      dest: /tmp/file.txt
+  - name: Copying jinja2 (index.html.j2) template file
+    template:
+      src: index.html.j2
+      dest: /var/www/html/index.html
+    notify: restart apache                  
