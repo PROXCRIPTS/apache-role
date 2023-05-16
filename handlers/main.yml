@@ -1,0 +1,7 @@
+---
+# handlers file for apache-role
+- name: restart apache
+  ansible.builtin.systemd:
+    name: httpd
+    state: restarted
+    enabled: true

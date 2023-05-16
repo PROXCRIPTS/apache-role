@@ -1,0 +1,32 @@
+---
+# tasks file for apache-role
+  - name: Install httpd application
+    ansible.builtin.yum:
+      name: httpd
+      state: latest
+      
+  - name: Enable and start service
+    ansible.builtin.systemd:
+      name: httpd
+      state: started
+      enabled: true
+      
+  - name: Open firewall for http service
+    ansible.builtin.firewalld:
+      service: http
+      state: enabled
+      permanent: true
+      immediate: true
+
+  - name: create simple site
+    ansible.builtin.copy:
+      src: tom.txt
+      dest: /tmp/tom.txt    
+
+  - name: copy content using jinja2
+    ansible.builtin.template:
+      src: index.j2 
+      dest: /var/www/html/index.html
+    notify: restart apache  
+    
+
